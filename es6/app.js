@@ -2,7 +2,8 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import Main from './main.js';
 let map,
-    marker;
+    marker,
+    flightPath;
 
 document.addEventListener('DOMContentLoaded', () => {
     let element = document.querySelector('#main'),
@@ -24,10 +25,21 @@ function initMap () {
             lng: 35.028482
         }
     });
+
+    flightPath = new google.maps.Polyline({
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+
+    flightPath.setMap(map);
 }
 
 function updateMap (store, point) {
     store.push(point);
+    console.log(point);
 
     marker && marker.setMap(null);
     marker = new google.maps.Marker({
@@ -35,15 +47,5 @@ function updateMap (store, point) {
         map: map
     });
 
-    var flightPath = new google.maps.Polyline({
-        path: store,
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-    });
-
-    flightPath.setMap(map);
-
-
+    flightPath.setPath(store);
 }

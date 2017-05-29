@@ -9535,7 +9535,8 @@ var _main2 = _interopRequireDefault(_main);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var map = void 0,
-    marker = void 0;
+    marker = void 0,
+    flightPath = void 0;
 
 document.addEventListener('DOMContentLoaded', function () {
     var element = document.querySelector('#main'),
@@ -9557,19 +9558,8 @@ function initMap() {
             lng: 35.028482
         }
     });
-}
 
-function updateMap(store, point) {
-    store.push(point);
-
-    marker && marker.setMap(null);
-    marker = new google.maps.Marker({
-        position: point,
-        map: map
-    });
-
-    var flightPath = new google.maps.Polyline({
-        path: store,
+    flightPath = new google.maps.Polyline({
         geodesic: true,
         strokeColor: '#FF0000',
         strokeOpacity: 1.0,
@@ -9577,6 +9567,19 @@ function updateMap(store, point) {
     });
 
     flightPath.setMap(map);
+}
+
+function updateMap(store, point) {
+    store.push(point);
+    console.log(point);
+
+    marker && marker.setMap(null);
+    marker = new google.maps.Marker({
+        position: point,
+        map: map
+    });
+
+    flightPath.setPath(store);
 }
 
 /***/ }),

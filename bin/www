@@ -6,7 +6,8 @@
 
 var app = require('../app');
 var debug = require('debug')('geo:server');
-var http = require('http');
+var http = require('http'),
+    mapData = require('../map');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,12 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+
+io.on('connection', function (socket) {
+    mapData.emitData(socket);
+});
 
 /**
  * Listen on provided port, on all network interfaces.

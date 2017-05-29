@@ -1,5 +1,5 @@
 import React from 'react';
 
-export default ({name}) => {
-    <div>name</div>
-}
+export default ({name}) => (
+    <div>{name}</div>
+)

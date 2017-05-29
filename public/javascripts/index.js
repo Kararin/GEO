@@ -9534,17 +9534,50 @@ var _main2 = _interopRequireDefault(_main);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-document.addEventListener('DOMContentLoaded', function () {
-    var element = document.querySelector('#main');
-    console.log(element);
+var map = void 0,
+    marker = void 0;
 
-    _reactDom2.default.render(_react2.default.createElement(
-        _main2.default,
-        { name: 'Karina' },
-        'Hello, world!'
-    ), document.querySelector('#main'));
-    console.log('ok');
+document.addEventListener('DOMContentLoaded', function () {
+    var element = document.querySelector('#main'),
+        socket = io(),
+        store = [];
+
+    socket.on('mapData', function (data) {
+        updateMap(store, data);
+    });
+
+    initMap();
 });
+
+function initMap() {
+    map = new google.maps.Map(document.getElementById('main'), {
+        zoom: 15,
+        center: {
+            lat: 48.473285,
+            lng: 35.028482
+        }
+    });
+}
+
+function updateMap(store, point) {
+    store.push(point);
+
+    marker && marker.setMap(null);
+    marker = new google.maps.Marker({
+        position: point,
+        map: map
+    });
+
+    var flightPath = new google.maps.Polyline({
+        path: store,
+        geodesic: true,
+        strokeColor: '#FF0000',
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+    });
+
+    flightPath.setMap(map);
+}
 
 /***/ }),
 /* 82 */
@@ -22063,11 +22096,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = function (_ref) {
     var name = _ref.name;
-
-    _react2.default.createElement(
+    return _react2.default.createElement(
         'div',
         null,
-        'name'
+        name
     );
 };
 

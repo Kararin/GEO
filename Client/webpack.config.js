@@ -19,7 +19,7 @@ module.exports = {
                 plugins: []
             },
             include: [
-                path.resolve(__dirname, 'es6')
+                path.resolve(__dirname, '/Client/es6')
             ]
         }]
     },

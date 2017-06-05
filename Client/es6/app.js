@@ -1,6 +1,3 @@
-import ReactDOM from 'react-dom';
-import React from 'react';
-import Main from './main.js';
 let map,
     marker,
     flightPath;
@@ -10,8 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
         socket = io(),
         store = [];
 
-    socket.on('mapData', function (data) {
-        updateMap(store, data);
+    socket.on('latest', function (data) {
+        // updateMap(store, data);
+        console.log(data);
     });
 
     initMap();

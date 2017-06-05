@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GeoDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Position">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Guid" Nullable="false" />
+    <Property Name="longitude" Type="Single" Nullable="false" />
+    <Property Name="latitude" Type="Single" Nullable="false" />
+    <Property Name="altitude" Type="Single" />
+    <Property Name="velocity" Type="Single" Nullable="false" />
+    <Property Name="heading" Type="Single" Nullable="false" />
+    <Property Name="vertical_rate" Type="Single" />
+    <Property Name="time" Type="DateTime" Nullable="false" Precision="7" />
+  </EntityType>
+  <EntityContainer Name="GeoDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Position" EntityType="Self.Position" />
+  </EntityContainer>
+</Schema>

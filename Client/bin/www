@@ -25,7 +25,7 @@ var io = require('socket.io')(server);
 
 
 io.on('connection', function (socket) {
-    mapData.start(socket);
+    mapData.set(socket);
 });
 
 /**

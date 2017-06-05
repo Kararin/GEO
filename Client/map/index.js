@@ -6,7 +6,7 @@ let fs = require('fs'),
     socket,
     interval;
 
-async function connect (socket) {
+async function connect () {
     pool = await sql.connect('mssql://sa:Proprietor1@@localhost/testdb');
 }
 
@@ -26,13 +26,19 @@ async function requestLatest () {
 
     return result;
 }
+async function requestRange (range) {
+    const result = await sql.query`
+        select * 
+        from position 
+        where time between ${range.from} and ${range.to}
+        order by time
+    `
 
-async function start(socket) {
-    socket = socket;
+    return result;
+}
 
+async function start() {
     console.log('start');
-    // initListeners();
-    await connect();
 
     console.log('connected');
     let latest = {};
@@ -48,15 +54,34 @@ async function start(socket) {
     }, 2000);
 }
 
-function initListeners () {
-    socket.on('stop', async function () {
-        await pool.close();
-        socket.emit('stop', 'stopped');
-    });
+async function stop () {
+    console.log('stopped');
+    clearInterval(interval);
+}
+
+async function show (range) {
+    console.log('show');
+    let {recordsets: result} = await requestRange(range);
+
+    console.log(result[0]);
+    socket.emit('range', result[0]);
+}
+
+function initListeners (socket) {
+    socket.on('start', start);
+    socket.on('stop', stop);
+    socket.on('show', show);
+}
+
+async function set(socketio) {
+    socket = socketio;
+    initListeners(socket);
+    await connect();
 }
 
 module.exports = {
     connect,
     request,
-    start
+    start,
+    set
 };
